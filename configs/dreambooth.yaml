@@ -1,0 +1,33 @@
+model:
+  name: "stabilityai/stable-diffusion-2-1"
+  revision: "main"
+
+instance:
+  data_dir: "./data/instance_images"
+  prompt: "a photo of sks dog"
+  class_prompt: "a photo of dog"
+
+training:
+  output_dir: "./output/dreambooth"
+  resolution: 512
+  train_batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 5e-6
+  lr_scheduler: "constant"
+  lr_warmup_steps: 0
+  max_train_steps: 800
+  checkpointing_steps: 200
+  seed: 42
+  mixed_precision: "fp16"
+  gradient_checkpointing: true
+  use_8bit_adam: false
+  prior_preservation: true
+  prior_loss_weight: 1.0
+  class_data_dir: "./data/class_images"
+  num_class_images: 200
+
+hardware:
+  # RX 7900 XTX specific
+  enable_xformers: false  # ROCm flash attn is flaky
+  allow_tf32: false
+  hsa_override_gfx_version: "11.0.0"
