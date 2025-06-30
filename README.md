@@ -53,6 +53,24 @@ A few things I've learned the hard way:
 | RX 7900 XT | 20GB | ✅ Works with smaller batches |
 | RX 6900 XT | 16GB | ⚠️ SDXL is tight |
 
+## Why AMD / ROCm
+
+High-resolution image generation with Stable Diffusion is one of the most GPU-demanding workloads in deep learning. Running on AMD GPUs via ROCm unlocks practical training and inference without NVIDIA lock-in:
+
+- **High-res generation at scale:** SDXL at 1024x1024 requires ~6-8GB VRAM just for inference. The RX 7900 XTX's 24GB lets us run full SDXL pipelines with room for batch inference (2-4 images in parallel), making production workflows viable.
+- **LoRA/DreamBooth training:** Fine-tuning diffusion models is VRAM-intensive — DreamBooth on SDXL peaks at 18-22GB. AMD's 24GB consumer card handles this without optimizer offloading hacks.
+- **UNet attention acceleration:** The cross-attention and self-attention layers in the UNet are the computational bottleneck. GPU parallelism delivers 30-40x speedup over CPU for the attention matrix multiplications.
+- **VAE decode speed:** The VAE decoder goes from 340ms/image (CPU) to ~25-40ms on GPU — critical for interactive generation workflows.
+- **Cost-effective training:** Train custom LoRA adapters and DreamBooth models on a $900 GPU that would otherwise require a $1,600+ NVIDIA card.
+
+## AMD GPU Credit Use Plan
+
+1. **Validate on ROCm GPUs** — Run SD 1.5 and SDXL inference, LoRA training, and DreamBooth end-to-end, verify image quality matches CUDA baseline
+2. **Compare CPU vs GPU latency** — Benchmark UNet forward pass, VAE decode, text encoding, and full pipeline throughput
+3. **Test fp16/bf16** — Profile mixed precision stability for UNet attention (NaN issues), VAE decode quality, and LoRA training convergence
+4. **Document ROCm issues** — Track `xformers` fallback behavior, `torch.compile` warmup overhead, and VRAM fragmentation patterns
+5. **Publish benchmarks** — Open results with FID scores, images/min throughput, VRAM profiles, and LoRA rank scaling curves
+
 ## License
 
 MIT. Do whatever you want with it.
