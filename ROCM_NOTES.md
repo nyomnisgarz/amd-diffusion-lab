@@ -9,7 +9,6 @@
 
 ## Current Blockers
 
-- No ROCm cloud instances available for automated testing — all validation is local
 - `xformers` memory-efficient attention doesn't build for ROCm — using PyTorch's `scaled_dot_product_attention` fallback
 - DreamBooth prior preservation loss requires generating class images on-the-fly — VRAM spikes during training
 
