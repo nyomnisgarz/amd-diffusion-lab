@@ -38,3 +38,8 @@ python diffusion_lab.py train --config configs/sd15_lora_low_vram.yaml
 
 - `examples/lora_training_plan.md` -- training a style LoRA
 - `configs/sd15_lora_low_vram.yaml` -- low-VRAM training config
+
+
+## Troubleshooting
+**Q: Getting OOM errors?**
+A: Reduce batch size or enable gradient checkpointing.
