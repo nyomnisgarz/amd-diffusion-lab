@@ -1,0 +1,38 @@
+# SD 1.5 LoRA training config for low VRAM (8GB)
+
+model:
+  name: 'runwayml/stable-diffusion-v1-5'
+  revision: null
+
+lora:
+  rank: 4
+  alpha: 4
+  target_modules: ['to_k', 'to_q', 'to_v', 'to_out.0']
+  dropout: 0.1
+
+training:
+  learning_rate: 1e-4
+  batch_size: 1
+  gradient_accumulation_steps: 4
+  max_steps: 1000
+  warmup_steps: 100
+  mixed_precision: 'fp16'
+  gradient_checkpointing: true
+  use_8bit_adam: true
+
+data:
+  dataset_path: './data/style_images'
+  resolution: 512
+  center_crop: true
+  random_flip: true
+
+logging:
+  log_every: 50
+  save_every: 250
+  output_dir: './outputs/lora_style'
+
+# Memory notes:
+# - gradient_checkpointing saves ~30% VRAM
+# - 8-bit Adam saves ~20% VRAM
+# - batch_size=1 is necessary for 8GB
+# - gradient_accumulation_steps=4 simulates batch_size=4
