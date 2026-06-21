@@ -1,1 +1,1 @@
-# Config - Add progress bar to pipeline
+# Config - Add config option for stable-diffusion pipeline
