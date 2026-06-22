@@ -43,3 +43,7 @@ python diffusion_lab.py train --config configs/sd15_lora_low_vram.yaml
 ## Troubleshooting
 **Q: Getting OOM errors?**
 A: Reduce batch size or enable gradient checkpointing.
+
+## Recent Updates
+- Performance improvements for batch processing
+- Better error messages for common issues
